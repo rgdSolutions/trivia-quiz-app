@@ -1,0 +1,80 @@
+{
+  "name": "fullstack-typescript",
+  "version": "2.0.1",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "clean-up-example-code": "node clean-up-example-code.js && rimraf clean-up-example-code.js",
+    "clean": "rimraf dist",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "start": "node index.js",
+    "start:prod": "cross-env NODE_ENV=production node index.js",
+    "type-check-client": "tsc -p ./src/client/tsconfig.json",
+    "build-client": "cross-env NODE_ENV=production vite build --config ./src/client/vite.config.ts",
+    "build-server": "tsc -b src/server && yarn fix-server-alias",
+    "dev-client": "vite --config ./src/client/vite.config.ts",
+    "fix-server-alias": "tsc-alias -p ./src/server/tsconfig.json",
+    "start-dev-server": "yarn fix-server-alias && yarn start",
+    "dev-server": "tsc-watch --noClear -b ./src/server/tsconfig.json --onSuccess \"yarn start-dev-server\"",
+    "dev": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev-server\" \"npm run dev-client\"",
+    "build": "yarn clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\""
+  },
+  "keywords": [
+    "typescript",
+    "react",
+    "starter-kit",
+    "vite",
+    "fullstack",
+    "express",
+    "node"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gilamran/fullstack-typescript.git"
+  },
+  "license": "MIT",
+  "author": "Gil Amran",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.1.0",
+    "@mui/material": "^7.1.0",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.18",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.4.1",
+    "babel-plugin-react-compiler": "^19.1.0-rc.2",
+    "concurrently": "^9.1.2",
+    "core-js": "^3.42.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-refresh": "^0.17.0",
+    "react-router": "^7.6.0",
+    "request": "^2.88.2",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsc-watch": "^6.2.1",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1",
+    "vite": "^6.3.5"
+  }
+}
