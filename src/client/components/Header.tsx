@@ -6,7 +6,7 @@ export const Header: React.FC = () => {
     <AppBar position='fixed' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <Typography variant='h6' noWrap>
-          Fullstack TypeScript
+          trivia-quiz-app
         </Typography>
       </Toolbar>
     </AppBar>

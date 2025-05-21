@@ -1,15 +1,14 @@
 {
-  "name": "fullstack-typescript",
-  "version": "2.0.1",
-  "description": "",
+  "name": "trivia-quiz-app",
+  "version": "1.0.0",
   "main": "index.js",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "clean-up-example-code": "node clean-up-example-code.js && rimraf clean-up-example-code.js",
     "clean": "rimraf dist",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "start": "node index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
     "type-check-client": "tsc -p ./src/client/tsconfig.json",
@@ -20,28 +19,23 @@
     "start-dev-server": "yarn fix-server-alias && yarn start",
     "dev-server": "tsc-watch --noClear -b ./src/server/tsconfig.json --onSuccess \"yarn start-dev-server\"",
     "dev": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev-server\" \"npm run dev-client\"",
-    "build": "yarn clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\""
+    "build": "yarn clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\"",
+    "deploy-db": "docker-compose -f docker-compose-db.yml up -d --remove-orphans && ts-node src/scripts/seed-db.ts",
+    "deploy-app": "docker-compose -f docker-compose-app.yml up -d --build --remove-orphans",
+    "demo": "yarn deploy-db && yarn deploy-app"
   },
   "keywords": [
     "typescript",
     "react",
-    "starter-kit",
-    "vite",
-    "fullstack",
-    "express",
-    "node"
+    "vite"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gilamran/fullstack-typescript.git"
-  },
   "license": "MIT",
-  "author": "Gil Amran",
   "dependencies": {
     "axios": "^1.9.0",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.15.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
@@ -61,6 +55,7 @@
     "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.1.0",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -76,5 +71,8 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1",
     "vite": "^6.3.5"
+  },
+  "overrides": {
+    "globals": "14.0.0"
   }
 }
