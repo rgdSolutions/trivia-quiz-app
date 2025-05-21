@@ -15,7 +15,8 @@
     "jsx": "react",
     "paths": {
       "@shared/*": ["../shared/*"]
-    }
+    },
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

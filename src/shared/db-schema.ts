@@ -1,13 +1,13 @@
 import { model, Schema } from 'mongoose';
 
-const CategorySchema = new Schema({
+export const CategorySchema = new Schema({
   id: { type: Number, required: true, unique: true },
   name: { type: String, required: true },
 });
 
 export const CategoryModel = model('Category', CategorySchema);
 
-const QuestionSchema = new Schema({
+export const QuestionSchema = new Schema({
   category: { type: String, required: true },
   correct_answer: { type: String, required: true },
   difficulty: { type: String, required: true },

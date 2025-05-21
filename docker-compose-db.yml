@@ -7,8 +7,12 @@ services:
     volumes:
       - mongodb_data_container:/data/db
     environment:
+      CATEGORIES_ENDPOINT: ${CATEGORIES_ENDPOINT}
+      MAX_NUMBER_OF_CATEGORIES: ${MAX_NUMBER_OF_CATEGORIES}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      restart: unless-stopped
+      MONGO_URI: ${MONGO_URI}
+      QUESTIONS_ENDPOINT: ${QUESTIONS_ENDPOINT}
+    restart: unless-stopped
 volumes:
   mongodb_data_container:

@@ -20,22 +20,28 @@
     "dev-server": "tsc-watch --noClear -b ./src/server/tsconfig.json --onSuccess \"yarn start-dev-server\"",
     "dev": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev-server\" \"npm run dev-client\"",
     "build": "yarn clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\"",
-    "deploy-db": "docker-compose -f docker-compose-db.yml up -d --remove-orphans && ts-node src/scripts/seed-db.ts",
-    "deploy-app": "docker-compose -f docker-compose-app.yml up -d --build --remove-orphans",
-    "demo": "yarn deploy-db && yarn deploy-app"
+    "docker-db": "docker-compose -f docker-compose-db.yml up -d --remove-orphans && ts-node src/scripts/seed-db.ts",
+    "docker-all": "docker-compose -f docker-compose-app.yml up -d --build --remove-orphans",
+    "demo": "yarn build && yarn docker-all && ts-node src/scripts/seed-db.ts"
   },
   "keywords": [
     "typescript",
     "react",
-    "vite"
+    "vite",
+    "material-ui",
+    "redux",
+    "express",
+    "mongoose",
+    "docker"
   ],
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.9.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "mongoose": "^8.15.0"
+    "mongoose": "^8.15.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",

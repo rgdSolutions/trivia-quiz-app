@@ -74,7 +74,7 @@ const seedCategories = async () => {
     // Randomize the categories
     .sort(() => Math.random() - 0.5)
     // Keep only the first n categories
-    .slice(0, parseInt(MAX_NUMBER_OF_CATEGORIES))
+    .slice(0, parseInt(MAX_NUMBER_OF_CATEGORIES));
   await CategoryModel.insertMany(categoriesToInsert);
   console.log(`\n${MAX_NUMBER_OF_CATEGORIES} categories have been successfully seeded to db!`);
 };
@@ -118,9 +118,8 @@ const fetchAllQuestionsForOneCategory = async (categoryId: number) => {
     }
   } catch (error) {
     console.error(`\nError fetching questions for category ${categoryId}:`, error);
-  } finally {
-    return data.results;
   }
+  return data.results;
 };
 
 const closeConnectionAndExit = async () => {

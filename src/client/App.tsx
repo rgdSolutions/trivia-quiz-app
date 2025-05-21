@@ -1,24 +1,23 @@
 import { Box, CssBaseline, Toolbar } from '@mui/material';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { Header } from './components/Header';
-import { SideMenu } from './components/SideMenu';
-import { Home } from './components/Home';
+import { QuizMaker } from './components/quiz-maker';
+import { store } from './redux/store';
+import { Provider as ReduxProvider } from 'react-redux';
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <Header />
-        <SideMenu />
-        <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-          <Toolbar />
-          <Routes>
-            <Route path='/' element={<Home />} />
-          </Routes>
+      <ReduxProvider store={store}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+            <Routes>
+              <Route index element={<QuizMaker />} />
+            </Routes>
+          </Box>
         </Box>
-      </Box>
+      </ReduxProvider>
     </BrowserRouter>
   );
 };

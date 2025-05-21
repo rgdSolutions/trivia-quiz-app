@@ -22,7 +22,8 @@
     "useDefineForClassFields": true,
     "paths": {
       "@shared/*": ["../shared/*"]
-    }
+    },
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["**/*.ts", "../shared/*"],
   "exclude": ["**/*.test.ts"]

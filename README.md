@@ -28,18 +28,21 @@ This git repository was generated from the [fullstack-typescript](https://github
 #### Additional Dependencies
 Besides the dependencies that came with the boilerplate, I added these:
 - [Mongoose](https://mongoosejs.com/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
 -
--
+
+#### Docker
+Docker is used to containerize the MongoDB databse, the server process and the client process. I am not a Docker expert, but I am experienced enough that I used the documentation and some targetted Google searches to help myself craft the *.yml files.
 
 #### Generative AI Usage
 Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux slices, and Jest test cases. Outside of the Cursor IDE, no other generative AI tools were used.
 
-## Folder Structure
+## Source Code Folder Structure
 ```
 src/
-  client/           # strictly FE code like React and Redux
+  client/           # strictly FE code, eg React and Redux
     components/     # React components
-  scripts/          # miscellaneous scripts like seeding the db
-  server/           # strictly BE code like the Express API
-  shared/           # code shared by both BE and FE like types
+  scripts/          # miscellaneous scripts, ie seeding the db
+  server/           # strictly BE code, ie the Express API
+  shared/           # code shared by both BE and FE, eg types
 ```

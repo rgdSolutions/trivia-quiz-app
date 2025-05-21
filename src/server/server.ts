@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import { apiRouter } from './routes/api-router';
 import { pagesRouter } from './routes/pages-router';
 import { staticsRouter } from './routes/statics-router';
 import * as config from './config';
@@ -12,7 +13,15 @@ console.log(`*******************************************`);
 const app = express();
 app.set('view engine', 'ejs');
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Static files
 app.use('/assets', express.static(path.join(process.cwd(), 'assets')));
+
+// Routes
+app.use(apiRouter());
 app.use(staticsRouter());
 app.use(pagesRouter());
 

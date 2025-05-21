@@ -13,7 +13,6 @@ const rawPackageJson = fs.readFileSync(packageJsonPath).toString();
 const PackageJson = JSON.parse(rawPackageJson);
 const { version: VERSION } = PackageJson;
 
-// server
-const SERVER_PORT = process.env.PORT || 5000;
+const SERVER_PORT = process.env.PORT || 3000;
 
 export { IS_DEV, VERSION, SERVER_PORT };
