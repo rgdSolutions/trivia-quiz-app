@@ -40,6 +40,7 @@ Besides the dependencies that came with the boilerplate, I added these:
 - [Redux Toolkit (RTK)](https://redux-toolkit.js.org/)
 - [Vitest](https://vitest.dev/)
 - [SuperTest](https://github.com/ladjs/supertest)
+- [msw](https://mswjs.io/)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
 #### Docker
@@ -92,7 +93,7 @@ src/
 ```
 
 ## Testing
-Vitest is used as the overall test runner for the unit tests of this full-stack application. SuperTest is used in the unit testing of the backend api service to mock the Express server. React Testing Library is used in unit testing of the frontend code to shallow render the React Components and interact with the UI from the point of view of a human user.
+Vitest is used as the overall test runner for the unit tests of this full-stack application. SuperTest is used in the unit testing of the backend api service to mock the Express server. MSW is used in the unit testing of the frontend code to mock http requests and responses. React Testing Library is used in unit testing of the frontend code to shallow render the React Components and interact with the UI from the point of view of a human user. All test files (*.test.ts*) are colocated in the same folder as the feature code they are testing.
 
 To run all tests, run the following command:
 ```shell

@@ -1,9 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Category, QuizQuestion, Difficulty } from '@shared/types';
 
+// baseUrl is set to /api in development and http://localhost/api in the test environment
+// to avoid errors from network requests in tests
+let isVitest = false;
+if (typeof process !== 'undefined') {
+  isVitest = process?.env?.VITEST === 'true';
+}
+
 export const triviaApi = createApi({
   reducerPath: 'triviaApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: isVitest ? 'http://localhost/api' : '/api' }),
   endpoints: (builder) => ({
     getAllCategories: builder.query<Category[], void>({
       query: () => `categories`,

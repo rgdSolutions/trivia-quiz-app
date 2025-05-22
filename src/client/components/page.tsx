@@ -12,7 +12,7 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = ({
   title,
   sx = { width: '100%' },
 }) => (
-  <Box sx={sx}>
+  <Box data-testid='page-container' sx={sx}>
     <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <CardHeader
         title={title}

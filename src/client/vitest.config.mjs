@@ -8,12 +8,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      '@shared': path.resolve(__dirname, './src/shared'),
+      '@shared': path.resolve(__dirname, '../shared'),
     },
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['src/server/**/*.test.ts', 'src/shared/**/*.test.ts'],
+    setupFiles: './src/client/vitest.setup.ts',
+    include: ['./src/client/**/*.test.ts', './src/client/**/*.test.tsx'],
   },
 });

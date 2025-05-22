@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, renderHook } from '@testing-library/react';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { MultipleChoiceQuestion } from './multiple-choice-question';
 import type { QuizState } from '../redux/slices/quiz';
-import { baseQuizState, renderHookWithProvider, renderWithStore } from '../utils/test-helpers';
+import { baseQuizState, renderWithStore } from '../utils/test-helpers';
+import { mockDispatch } from '../vitest.setup';
 
 const mockQuestion = {
   question: 'What is 2 + 2?',
@@ -22,24 +22,24 @@ describe('MultipleChoiceQuestion', () => {
   });
 
   it('dispatches selectAnswer when an answer is clicked and quiz is not yet scored', () => {
+    mockDispatch.mockClear();
     renderWithStore(<MultipleChoiceQuestion item={mockQuestion} index={0} />);
-    const { result } = renderHookWithProvider(useDispatch);
     fireEvent.click(screen.getByText('4'));
-    expect(result.current).toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenCalled();
   });
 
   it('does not dispatch selectAnswer if quiz is already scored', () => {
+    mockDispatch.mockClear();
     const scoredState: QuizState = {
       ...baseQuizState,
       selectedAnswers: ['4', '', '', ''],
       correctAnswers: ['4', '', '', ''],
     };
-    const { store } = renderWithStore(<MultipleChoiceQuestion item={mockQuestion} index={0} />, scoredState);
-    const spy = vi.spyOn(store, 'dispatch');
+    renderWithStore(<MultipleChoiceQuestion item={mockQuestion} index={0} />, scoredState);
     const answerButton = screen.getByText('4');
     fireEvent.click(answerButton);
     // Should not dispatch because quiz is scored
-    expect(spy).not.toHaveBeenCalled();
+    expect(mockDispatch).not.toHaveBeenCalled();
   });
 
   it('shows correct styling for selected and correct answers', () => {
