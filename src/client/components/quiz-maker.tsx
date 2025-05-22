@@ -1,12 +1,16 @@
 import type { SelectChangeEvent } from '@mui/material';
-import { InputLabel, Box, FormControl, Typography, Select, MenuItem, Button } from '@mui/material';
-import React, { useState } from 'react';
+import { InputLabel, Box, FormControl, Select, MenuItem, Button } from '@mui/material';
+import type { Category, Difficulty } from '@shared/types';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { Page } from './page';
 import {
   useGetAllCategoriesQuery,
   useGetDifficultiesByCategoryQuery,
-  useGetQuestionsByCategoryAndDifficultyQuery,
+  useGetQuestionsCountByCategoryAndDifficultyQuery,
 } from '../redux/api/trivia';
+import { clearQuiz, createQuiz } from '../redux/slices/quiz';
 
 const numberOfQuestionsOptions = [
   { value: '3', label: 'Three' },
@@ -15,15 +19,23 @@ const numberOfQuestionsOptions = [
 ];
 
 export const QuizMaker: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [category, setCategory] = useState<string>('');
   const [difficulty, setDifficulty] = useState<string>('');
   const [numberOfQuestions, setNumberOfQuestions] = useState<string>('');
   const { data: categories } = useGetAllCategoriesQuery();
-  const { data: difficulties } = useGetDifficultiesByCategoryQuery({ category });
-  const { data: questions } = useGetQuestionsByCategoryAndDifficultyQuery({ category, difficulty });
+  const { data: difficulties } = useGetDifficultiesByCategoryQuery(
+    { category },
+    { skip: !category },
+  );
+  const { data } = useGetQuestionsCountByCategoryAndDifficultyQuery(
+    { category, difficulty: difficulty as Difficulty },
+    { skip: !category || !difficulty },
+  );
 
   const numberOptionsToShow = numberOfQuestionsOptions.filter(
-    (option) => Number(option.value) <= Number(questions?.length),
+    (option) => Number(option.value) <= (data?.question_count ?? 0),
   );
 
   const handleCategoryChange = (e: SelectChangeEvent<string>) => {
@@ -41,6 +53,23 @@ export const QuizMaker: React.FC = () => {
     setNumberOfQuestions(e.target.value);
   };
 
+  const handleCreateQuiz = () => {
+    if (!category || !difficulty || !numberOfQuestions || !data?.question_count) return;
+    dispatch(
+      createQuiz({
+        category,
+        difficulty: difficulty as Difficulty,
+        numberOfQuestions: Number(numberOfQuestions),
+      }),
+    );
+    navigate('/quiz');
+  };
+
+  // Clear the quiz when the component mounts
+  useEffect(() => {
+    dispatch(clearQuiz());
+  }, [dispatch]);
+
   return (
     <Page title='Quiz Maker'>
       <Box display='flex' alignItems='center' gap={1}>
@@ -54,11 +83,14 @@ export const QuizMaker: React.FC = () => {
             size='medium'
             disabled={!categories}
           >
-            {categories?.map((cat: any) => (
-              <MenuItem key={cat.id} value={cat.name}>
-                {cat.name}
-              </MenuItem>
-            ))}
+            {categories
+              ?.slice()
+              .sort((a: Category, b: Category) => a.name.localeCompare(b.name))
+              .map((category: Category) => (
+                <MenuItem key={category.id} value={category.name}>
+                  {category.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
 
@@ -89,7 +121,7 @@ export const QuizMaker: React.FC = () => {
             label='Quantity'
             onChange={handleNumberOfQuestionsChange}
             size='medium'
-            disabled={!categories || !difficulties || !questions}
+            disabled={!categories || !difficulties || !data?.question_count}
           >
             {numberOptionsToShow.map((numberOption: any) => (
               <MenuItem key={numberOption.value} value={numberOption.value}>
@@ -101,9 +133,10 @@ export const QuizMaker: React.FC = () => {
 
         <Button
           variant='outlined'
-          size="large"
+          size='large'
           sx={{ py: 1.75 }}
           disabled={!category || !difficulty || !numberOfQuestions}
+          onClick={handleCreateQuiz}
         >
           Create
         </Button>

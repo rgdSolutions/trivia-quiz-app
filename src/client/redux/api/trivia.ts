@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Category, Question } from '@shared/types';
+import type { Category, QuizQuestion, Difficulty } from '@shared/types';
 
 export const triviaApi = createApi({
   reducerPath: 'triviaApi',
@@ -8,14 +8,20 @@ export const triviaApi = createApi({
     getAllCategories: builder.query<Category[], void>({
       query: () => `categories`,
     }),
-    getDifficultiesByCategory: builder.query<string[], { category: string }>({
-      query: ({ category }) => `categories/${category}/difficulties`,
+    getDifficultiesByCategory: builder.query<Difficulty[], { category: string }>({
+      query: ({ category }) => `difficulties/${category}`,
     }),
-    getQuestionsByCategoryAndDifficulty: builder.query<
-      Question[],
-      { category: string; difficulty: string }
+    getQuestionsCountByCategoryAndDifficulty: builder.query<
+      { question_count: number },
+      { category: string; difficulty: Difficulty }
     >({
-      query: ({ category, difficulty }) => `categories/${category}/${difficulty}/questions`,
+      query: ({ category, difficulty }) => `questions/${category}/${difficulty}/count`,
+    }),
+    getQuestionsByCategoryDifficultyAndCount: builder.query<
+      QuizQuestion[],
+      { category: string; difficulty: Difficulty; count: number }
+    >({
+      query: ({ category, difficulty, count }) => `quiz/${category}/${difficulty}/${count}`,
     }),
   }),
 });
@@ -23,5 +29,6 @@ export const triviaApi = createApi({
 export const {
   useGetAllCategoriesQuery,
   useGetDifficultiesByCategoryQuery,
-  useGetQuestionsByCategoryAndDifficultyQuery,
+  useGetQuestionsCountByCategoryAndDifficultyQuery,
+  useGetQuestionsByCategoryDifficultyAndCountQuery,
 } = triviaApi;

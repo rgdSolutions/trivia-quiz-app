@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { triviaApi } from './api/trivia';
+import quizReducer from './slices/quiz';
 
 export const store = configureStore({
   reducer: {
     [triviaApi.reducerPath]: triviaApi.reducer,
+    quiz: quizReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(triviaApi.middleware),
 });

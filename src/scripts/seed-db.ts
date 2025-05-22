@@ -1,5 +1,5 @@
-import { connect, connection } from 'mongoose';
 import dotenv from 'dotenv';
+import { connect, connection } from 'mongoose';
 import { CategoryModel, QuestionModel } from '../shared/db-schema';
 
 type OpenTDBCategory = {
@@ -84,8 +84,15 @@ const seedQuestions = async () => {
   const categories = await CategoryModel.find();
   for (const category of categories) {
     const questions = await fetchAllQuestionsForOneCategory(category.id);
-    console.log(`\n${category.name} questions fetched:`, questions.length);
-    await QuestionModel.insertMany(questions);
+    const numberOfQuestions = questions.length;
+    if (numberOfQuestions === 0) {
+      // If no questions are fetched, delete the category
+      console.log(`\nNo questions fetched for category ${category.name}`);
+      await CategoryModel.deleteOne({ id: category.id });
+    } else {
+      console.log(`\n${category.name} questions fetched:`, numberOfQuestions);
+      await QuestionModel.insertMany(questions);
+    }
   }
   const totalQuestions = await QuestionModel.countDocuments();
   console.log(`\n${totalQuestions} questions have been seeded to db!`);

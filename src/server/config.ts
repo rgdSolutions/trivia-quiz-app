@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
