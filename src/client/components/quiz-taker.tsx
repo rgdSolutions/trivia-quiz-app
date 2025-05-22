@@ -1,27 +1,47 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { yellow } from '@mui/material/colors';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { MultipleChoiceQuestion } from './multiple-choice-question';
 import { Page } from './page';
-import { useGetQuestionsByCategoryDifficultyAndCountQuery } from '../redux/api/trivia';
+import type { RootState } from '../redux/store';
+import {
+  useGetQuestionsByCategoryDifficultyAndCountQuery,
+  useSendQuizAnswersMutation,
+} from '../redux/api/trivia';
+import { clearQuiz } from '../redux/slices/quiz';
 
 export const QuizTaker: React.FC = () => {
   const navigate = useNavigate();
-  const { category, difficulty, numberOfQuestions, selectedAnswers, correctAnswers } = useSelector(
+  const dispatch = useDispatch();
+  const { category, difficulty, numberOfQuestions, selectedAnswers, correctAnswers, score } = useSelector(
     (state: RootState) => state.quiz,
   );
   const { data: questions } = useGetQuestionsByCategoryDifficultyAndCountQuery(
     { category: category!, difficulty: difficulty!, count: numberOfQuestions! },
     { skip: !category || !difficulty || !numberOfQuestions },
   );
+  const [sendQuizAnswers] = useSendQuizAnswersMutation();
 
   const hasAnsweredAllQuestions = selectedAnswers.every((answer) => answer !== '');
-  const hasSubmittedQuiz = correctAnswers.length > 0;
+  const hasSubmittedQuiz = typeof score === 'number';
+  const scoreTextColor = score && score >= 0.4 * numberOfQuestions && score < 0.8 * numberOfQuestions ? 'black' : 'white';
+  const scoreBgColor = !hasSubmittedQuiz
+    ? 'transparent'
+    : score && score >= 0.8 * numberOfQuestions
+      ? 'success.main'
+      : score && score >= 0.4 * numberOfQuestions
+        ? yellow[500]
+        : 'error.main';
 
   const handleSubmitQuiz = () => {
-    console.log('\n~~~ Quiz submitted ~~~');
+    sendQuizAnswers({ questions: questions!, selectedAnswers: selectedAnswers! });
+  };
+
+  const handleStartNewQuiz = () => {
+    dispatch(clearQuiz());
+    navigate('/');
   };
 
   // Redirect to the quiz maker if the quiz is not set
@@ -37,8 +57,18 @@ export const QuizTaker: React.FC = () => {
         {questions?.map((item, index) => (
           <MultipleChoiceQuestion key={item.question} item={item} index={index} />
         ))}
-        <Box sx={{ alignSelf: 'center', textAlign: 'center', width: '66%', height: '24px' }}>
-          {hasSubmittedQuiz ? 'You scored X out of Y' : ''}
+        <Box
+          sx={{
+            alignSelf: 'center',
+            textAlign: 'center',
+            width: '66%',
+            height: '24px',
+            backgroundColor: scoreBgColor,
+            color: scoreTextColor,
+
+          }}
+        >
+          {hasSubmittedQuiz ? `You scored ${score} out of ${numberOfQuestions}` : ''}
         </Box>
         {!hasSubmittedQuiz && (
           <Button
@@ -47,6 +77,11 @@ export const QuizTaker: React.FC = () => {
             disabled={!hasAnsweredAllQuestions}
           >
             {hasAnsweredAllQuestions ? 'Submit' : 'Answer all questions before submitting'}
+          </Button>
+        )}
+        {hasSubmittedQuiz && (
+          <Button variant='contained' color='secondary' onClick={handleStartNewQuiz}>
+            Start new quiz
           </Button>
         )}
       </Box>

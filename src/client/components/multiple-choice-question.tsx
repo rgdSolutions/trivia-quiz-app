@@ -5,14 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAnswer } from '../redux/slices/quiz';
 import type { RootState } from '../redux/store';
 
-export const MultipleChoiceQuestion: React.FC<{ item: QuizQuestion; index: number }> = ({
-  item: { question, possible_answers },
-  index,
-}) => {
+export const MultipleChoiceQuestion: React.FC<{
+  item: QuizQuestion;
+  index: number;
+}> = ({ item: { question, possible_answers }, index }) => {
   const dispatch = useDispatch();
-  const selectedAnswer = useSelector((state: RootState) => state.quiz.selectedAnswers[index]);
+  const { selectedAnswers, correctAnswers } = useSelector((state: RootState) => state.quiz);
+  const selectedAnswer = selectedAnswers[index];
+  const correctAnswer = correctAnswers[index];
+  const isQuizScored = typeof correctAnswer === 'string' && !!correctAnswer;
+  const isAnswerCorrect = isQuizScored && selectedAnswer === correctAnswer;
+  const isAnswerIncorrect = isQuizScored && selectedAnswer !== correctAnswer;
 
   const handleAnswerClick = (answer: string) => {
+    if (isQuizScored) return;
     dispatch(selectAnswer({ index, answer }));
   };
 
@@ -23,13 +29,15 @@ export const MultipleChoiceQuestion: React.FC<{ item: QuizQuestion; index: numbe
       </Typography>
       <Box display='flex' flexDirection='row' gap={1}>
         {possible_answers.map((answer) => {
-          const isAnswerSelected = selectedAnswer === answer;
+          const isAnswerSelected = answer === selectedAnswer;
+          const buttonVariant = isAnswerSelected || answer === correctAnswer ? 'contained' : 'outlined';
+          const buttonColor = isAnswerSelected && isAnswerIncorrect  ? 'error' : 'success';
           return (
             <Button
               key={answer}
-              color='success'
-              variant={isAnswerSelected ? 'contained' : 'outlined'}
-              sx={{ mb: 2 }}
+              variant={buttonVariant}
+              color={buttonColor}
+              sx={{ mb: 2, textTransform: 'none' }}
               onClick={() => handleAnswerClick(answer)}
             >
               {decodeHtml(answer)}

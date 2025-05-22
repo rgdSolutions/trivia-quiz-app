@@ -34,3 +34,8 @@ export const getQuestionsByCategoryAndDifficulty = async (category: string, diff
   const questions = await QuestionModel.find({ category, difficulty });
   return questions as unknown as Question[];
 };
+
+export const getOneQuestionByText = async (questionText: string) => {
+  const question = await QuestionModel.findOne({ question: questionText });
+  return question as unknown as Question;
+};

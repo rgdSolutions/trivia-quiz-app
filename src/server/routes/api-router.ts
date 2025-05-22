@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import {
   getAllCategories,
+  getOneQuestionByText,
   getQuestionsByCategory,
   getQuestionsByCategoryAndDifficulty,
 } from '../db';
@@ -54,6 +55,14 @@ export function apiRouter(): Router {
     res.json(mapQuestionsToQuizQuestions(questions.slice(0, Number(count))));
   });
 
+  // Get score and correct answers for a quiz
+  router.post('/api/quiz/score', async (req, res) => {
+    const { questions, selected_answers } = req.body;
+    const correct_answers = await mapQuizQuestionsToCorrectAnswers(questions);
+    const score = calculateScore(selected_answers, correct_answers);
+    res.json({ score, correct_answers });
+  });
+
   return router;
 }
 
@@ -64,4 +73,19 @@ const mapQuestionsToQuizQuestions = (questions: Question[]): QuizQuestion[] => {
       .concat(question.correct_answer)
       .sort(() => Math.random() - 0.5),
   }));
+};
+
+const mapQuizQuestionsToCorrectAnswers = async (
+  quizQuestions: QuizQuestion[],
+): Promise<string[]> => {
+  return await Promise.all(
+    quizQuestions.map(async (quizQuestion) => {
+      const question = await getOneQuestionByText(quizQuestion.question);
+      return question.correct_answer;
+    }),
+  );
+};
+
+const calculateScore = (selected_answers: string[], correct_answers: string[]): number => {
+  return selected_answers.filter((answer, index) => answer === correct_answers[index]).length;
 };

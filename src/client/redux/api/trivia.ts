@@ -23,6 +23,16 @@ export const triviaApi = createApi({
     >({
       query: ({ category, difficulty, count }) => `quiz/${category}/${difficulty}/${count}`,
     }),
+    sendQuizAnswers: builder.mutation<
+      { score: number; correct_answers: string[] },
+      { questions: QuizQuestion[]; selectedAnswers: string[] }
+    >({
+      query: ({ questions, selectedAnswers }) => ({
+        url: 'quiz/score',
+        method: 'POST',
+        body: { questions, selected_answers: selectedAnswers },
+      }),
+    }),
   }),
 });
 
@@ -31,4 +41,5 @@ export const {
   useGetDifficultiesByCategoryQuery,
   useGetQuestionsCountByCategoryAndDifficultyQuery,
   useGetQuestionsByCategoryDifficultyAndCountQuery,
+  useSendQuizAnswersMutation,
 } = triviaApi;

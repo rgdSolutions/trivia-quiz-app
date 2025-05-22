@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Difficulty, QuizQuestion } from '@shared/types';
+import { triviaApi } from '../api/trivia';
 
 export type QuizState = {
   category?: string;
@@ -9,6 +10,7 @@ export type QuizState = {
   questions: QuizQuestion[];
   selectedAnswers: string[];
   correctAnswers: string[];
+  score?: number;
 };
 
 const initialState: QuizState = {
@@ -18,6 +20,7 @@ const initialState: QuizState = {
   questions: [],
   selectedAnswers: [],
   correctAnswers: [],
+  score: undefined,
 };
 
 export const quizSlice = createSlice({
@@ -31,6 +34,7 @@ export const quizSlice = createSlice({
       state.questions = initialState.questions;
       state.selectedAnswers = initialState.selectedAnswers;
       state.correctAnswers = initialState.correctAnswers;
+      state.score = initialState.score;
     },
     createQuiz: (
       state,
@@ -48,6 +52,15 @@ export const quizSlice = createSlice({
     selectAnswer: (state, action: PayloadAction<{ index: number; answer: string }>) => {
       state.selectedAnswers[action.payload.index] = action.payload.answer;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      triviaApi.endpoints.sendQuizAnswers.matchFulfilled,
+      (state, { payload }) => {
+        state.correctAnswers = payload.correct_answers;
+        state.score = payload.score;
+      },
+    )
   },
 });
 
