@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { connect, connection } from 'mongoose';
 import { CategoryModel, QuestionModel } from '../shared/db-schema';
+import { shuffleArray } from '../shared/utils';
 
 type OpenTDBCategory = {
   id: number;
@@ -71,11 +72,10 @@ const seedCategories = async () => {
   console.log(`\nSeeding ${MAX_NUMBER_OF_CATEGORIES} categories...`);
   const categories = await fetchCategories();
   const categoriesToInsert = categories
-    // Randomize the categories
-    .sort(() => Math.random() - 0.5)
     // Keep only the first n categories
     .slice(0, parseInt(MAX_NUMBER_OF_CATEGORIES));
-  await CategoryModel.insertMany(categoriesToInsert);
+  const shuffledCategories = shuffleArray(categoriesToInsert);
+  await CategoryModel.insertMany(shuffledCategories);
   console.log(`\n${MAX_NUMBER_OF_CATEGORIES} categories have been successfully seeded to db!`);
 };
 

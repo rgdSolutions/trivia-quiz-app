@@ -30,8 +30,9 @@ export const MultipleChoiceQuestion: React.FC<{
       <Box display='flex' flexDirection='row' gap={1}>
         {possible_answers.map((answer) => {
           const isAnswerSelected = answer === selectedAnswer;
-          const buttonVariant = isAnswerSelected || answer === correctAnswer ? 'contained' : 'outlined';
-          const buttonColor = isAnswerSelected && isAnswerIncorrect  ? 'error' : 'success';
+          const buttonVariant =
+            isAnswerSelected || answer === correctAnswer ? 'contained' : 'outlined';
+          const buttonColor = isAnswerSelected && isAnswerIncorrect ? 'error' : 'success';
           return (
             <Button
               key={answer}

@@ -1,6 +1,7 @@
 import type { SelectChangeEvent } from '@mui/material';
 import { InputLabel, Box, FormControl, Select, MenuItem, Button } from '@mui/material';
 import type { Category, Difficulty } from '@shared/types';
+import { sortCategoryArrayAlphabetically } from '@shared/utils';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -83,14 +84,11 @@ export const QuizMaker: React.FC = () => {
             size='medium'
             disabled={!categories}
           >
-            {categories
-              ?.slice()
-              .sort((a: Category, b: Category) => a.name.localeCompare(b.name))
-              .map((category: Category) => (
-                <MenuItem key={category.id} value={category.name}>
-                  {category.name}
-                </MenuItem>
-              ))}
+            {sortCategoryArrayAlphabetically(categories).map((category: Category) => (
+              <MenuItem key={category.id} value={category.name}>
+                {category.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 

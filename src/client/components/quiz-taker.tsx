@@ -15,9 +15,8 @@ import { clearQuiz } from '../redux/slices/quiz';
 export const QuizTaker: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { category, difficulty, numberOfQuestions, selectedAnswers, correctAnswers, score } = useSelector(
-    (state: RootState) => state.quiz,
-  );
+  const { category, difficulty, numberOfQuestions, selectedAnswers, correctAnswers, score } =
+    useSelector((state: RootState) => state.quiz);
   const { data: questions } = useGetQuestionsByCategoryDifficultyAndCountQuery(
     { category: category!, difficulty: difficulty!, count: numberOfQuestions! },
     { skip: !category || !difficulty || !numberOfQuestions },
@@ -26,7 +25,10 @@ export const QuizTaker: React.FC = () => {
 
   const hasAnsweredAllQuestions = selectedAnswers.every((answer) => answer !== '');
   const hasSubmittedQuiz = typeof score === 'number';
-  const scoreTextColor = score && score >= 0.4 * numberOfQuestions && score < 0.8 * numberOfQuestions ? 'black' : 'white';
+  const scoreTextColor =
+    score && score >= 0.4 * numberOfQuestions && score < 0.8 * numberOfQuestions
+      ? 'black'
+      : 'white';
   const scoreBgColor = !hasSubmittedQuiz
     ? 'transparent'
     : score && score >= 0.8 * numberOfQuestions
@@ -65,7 +67,6 @@ export const QuizTaker: React.FC = () => {
             height: '24px',
             backgroundColor: scoreBgColor,
             color: scoreTextColor,
-
           }}
         >
           {hasSubmittedQuiz ? `You scored ${score} out of ${numberOfQuestions}` : ''}

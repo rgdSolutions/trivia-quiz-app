@@ -1,4 +1,5 @@
 import type { Question, QuizQuestion } from '@shared/types';
+import { shuffleArray } from '@shared/utils';
 import bodyParser from 'body-parser';
 import { Router } from 'express';
 import {
@@ -67,12 +68,11 @@ export function apiRouter(): Router {
 }
 
 const mapQuestionsToQuizQuestions = (questions: Question[]): QuizQuestion[] => {
-  return questions.map((question) => ({
+  const quizQuestions = questions.map((question) => ({
     question: question.question,
-    possible_answers: question.incorrect_answers
-      .concat(question.correct_answer)
-      .sort(() => Math.random() - 0.5),
+    possible_answers: question.incorrect_answers.concat(question.correct_answer),
   }));
+  return shuffleArray(quizQuestions);
 };
 
 const mapQuizQuestionsToCorrectAnswers = async (

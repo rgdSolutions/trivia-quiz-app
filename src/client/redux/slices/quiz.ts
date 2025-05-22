@@ -54,13 +54,10 @@ export const quizSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      triviaApi.endpoints.sendQuizAnswers.matchFulfilled,
-      (state, { payload }) => {
-        state.correctAnswers = payload.correct_answers;
-        state.score = payload.score;
-      },
-    )
+    builder.addMatcher(triviaApi.endpoints.sendQuizAnswers.matchFulfilled, (state, { payload }) => {
+      state.correctAnswers = payload.correct_answers;
+      state.score = payload.score;
+    });
   },
 });
 
