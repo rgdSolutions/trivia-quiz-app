@@ -1,1 +1,1 @@
-require('./dist/server/server');
+import './dist/server/server.js';

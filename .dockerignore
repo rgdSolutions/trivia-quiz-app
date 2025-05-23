@@ -1,0 +1,67 @@
+# .dockerignore for Node.js TypeScript Express project
+
+# Node.js dependencies
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+.npm
+
+# TypeScript build outputs
+dist
+build
+*.js.map
+
+# Configuration
+.npmrc
+.aws
+credentials
+config/local.*
+
+# Version control
+.git
+.gitignore
+.gitattributes
+.github
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing and coverage
+coverage
+.nyc_output
+*.lcov
+test
+__tests__
+**/*.test.ts
+**/*.spec.ts
+
+# Logs and temporary files
+logs
+*.log
+tmp
+temp
+
+# Documentation and markdown files
+docs
+*.md
+!README.md
+
+# Docker files
+.dockerignore
+Dockerfile*
+docker-compose*
+
+# Other unnecessary files
+.editorconfig
+.eslintrc
+.eslintignore
+.prettierrc
+.prettierignore
+nodemon.json

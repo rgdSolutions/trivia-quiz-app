@@ -13,14 +13,15 @@ To demo the app, you need to clone this repository locally and have the followin
 - [Yarn](https://yarnpkg.com/)
 - [Docker](https://www.docker.com/)
 
-Once all three are installed, run these commands in your terminal from the root folder of the cloned repository:
-```shell
-yarn install
-```
+Once all three are installed, run the following command in your terminal from the root folder of the cloned repository:
 ```shell
 yarn demo
 ```
-> **Note**: These commands will run all application processes and seed the database with a default configuration. The `MAX_NUMBER_OF_CATEGORIES` value can be changed in the `.env` file if you would like to seed the database additional categories.
+> **Note**: This command will run all application processes and seed the database with a default configuration. The `MAX_NUMBER_OF_CATEGORIES` value can be changed in the `.env.demo` file if you would like to seed the database additional categories.
+
+Next, wait until your shell shows that the seeding script is completely finished.
+
+Finally, open your browser to http://localhost:3000.
 
 ## Overview of Development
 
@@ -47,7 +48,7 @@ Besides the dependencies that came with the boilerplate, I added these:
 Docker is used to containerize the MongoDB databse, the server process and the client process. I am not a Docker expert, but I am experienced enough that I used the documentation and some targetted Google searches to help myself craft the *.yml files.
 
 #### Generative AI Usage
-Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux RTK Query api endpoints, and Vitest test cases. I tested and validated any and all comitted AI suggestions. Outside of the Cursor IDE, no other generative AI tools were used.
+Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux RTK Query api endpoints, and Vitest test cases. I also used chatGPT to help me troubleshoot my docker files. I tested and validated any and all comitted AI suggestions. Outside of the Cursor IDE and chatGPT for the docker files, no other generative AI tools were used.
 
 ## Further Development
 To further development of this app, you need to clone this repository locally and have the following dependencies installed on your system:
@@ -62,6 +63,10 @@ yarn install
 To spin up the MongoDB and seed it, run the following command:
 ```shell
 yarn docker-db
+```
+To see the database, run the following command:
+```shell
+yarn seed-db
 ```
 To spin up the development servers with hot-reloading, run the following command:
 ```shell

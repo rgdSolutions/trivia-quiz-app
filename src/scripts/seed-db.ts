@@ -26,18 +26,17 @@ type OpenTDBQuestionResponseData = {
 };
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: '.env' });
 const {
   CATEGORIES_ENDPOINT,
   MAX_NUMBER_OF_CATEGORIES,
   MONGO_INITDB_ROOT_USERNAME,
   MONGO_INITDB_ROOT_PASSWORD,
-  MONGO_URI,
   QUESTIONS_ENDPOINT,
 } = process.env as Record<string, string>;
 
 // Connect to local mongo db
-connect(MONGO_URI, {
+connect('mongodb://localhost:27017', {
   auth: {
     username: MONGO_INITDB_ROOT_USERNAME,
     password: MONGO_INITDB_ROOT_PASSWORD,
@@ -71,11 +70,11 @@ const clearDb = async () => {
 const seedCategories = async () => {
   console.log(`\nSeeding ${MAX_NUMBER_OF_CATEGORIES} categories...`);
   const categories = await fetchCategories();
-  const categoriesToInsert = categories
+  const shuffledCategories = shuffleArray(categories);
+  const categoriesToInsert = shuffledCategories
     // Keep only the first n categories
     .slice(0, parseInt(MAX_NUMBER_OF_CATEGORIES));
-  const shuffledCategories = shuffleArray(categoriesToInsert);
-  await CategoryModel.insertMany(shuffledCategories);
+  await CategoryModel.insertMany(categoriesToInsert);
   console.log(`\n${MAX_NUMBER_OF_CATEGORIES} categories have been successfully seeded to db!`);
 };
 
