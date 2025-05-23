@@ -21,6 +21,8 @@ yarn demo
 
 Next, wait until your terminal shows that the seeding script is completely finished.
 
+<img src="./assets/script-finishes.png" style="max-width: 500px" />
+
 Finally, open your browser to http://localhost:3000.
 
 ## Overview of Development
