@@ -1,15 +1,13 @@
 import '@testing-library/jest-dom';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QuizMaker } from './quiz-maker';
 import { renderWithStore } from '../utils/test-helpers';
+import { mockNavigate } from '../vitest.setup';
+import { mockDispatch } from '../vitest.setup';
 
 describe('QuizMaker', () => {
-  // beforeEach(() => {
-  //   vi.clearAllMocks();
-  // });
-
   it('renders all dropdowns and the create button', () => {
     renderWithStore(<QuizMaker />);
     expect(screen.getByLabelText(/Category/i)).toBeInTheDocument();
@@ -18,28 +16,29 @@ describe('QuizMaker', () => {
     expect(screen.getByRole('button', { name: /Create/i })).toBeInTheDocument();
   });
 
-  it('shows categories in alphabetical order', () => {
+  it('shows categories in alphabetical order', async () => {
     renderWithStore(<QuizMaker />);
-    const options = screen.getAllByRole('option');
-    // The first two options should be alphabetical
+    fireEvent.mouseDown(screen.getByLabelText(/Category/i));
+    const options = await screen.getAllByRole('option');
+    // The first two options should be in alphabetical order
     expect(options[0]).toHaveTextContent('History');
     expect(options[1]).toHaveTextContent('Science');
   });
 
-  it.skip('disables difficulty and quantity selects until category is chosen', () => {
+  it('disables difficulty and quantity selects until category is chosen', () => {
     renderWithStore(<QuizMaker />);
-    expect(screen.getByLabelText(/Difficulty/i)).toBeDisabled();
-    expect(screen.getByLabelText(/Quantity/i)).toBeDisabled();
+    expect(screen.getByLabelText(/Difficulty/i)).toHaveAttribute('aria-disabled');
+    expect(screen.getByLabelText(/Quantity/i)).toHaveAttribute('aria-disabled');
   });
 
-  it.skip('enables difficulty select after category is chosen', () => {
+  it('enables difficulty select after category is chosen', () => {
     renderWithStore(<QuizMaker />);
     fireEvent.mouseDown(screen.getByLabelText(/Category/i));
     fireEvent.click(screen.getByText('Science'));
     expect(screen.getByLabelText(/Difficulty/i)).not.toBeDisabled();
   });
 
-  it.skip('enables quantity select after category and difficulty are chosen', () => {
+  it('enables quantity select after category and difficulty are chosen', () => {
     renderWithStore(<QuizMaker />);
     // Select category
     fireEvent.mouseDown(screen.getByLabelText(/Category/i));
@@ -50,7 +49,7 @@ describe('QuizMaker', () => {
     expect(screen.getByLabelText(/Quantity/i)).not.toBeDisabled();
   });
 
-  it.skip('enables create button only when all selections are made', () => {
+  it('enables create button only when all selections are made', () => {
     renderWithStore(<QuizMaker />);
     const createButton = screen.getByRole('button', { name: /Create/i });
     expect(createButton).toBeDisabled();
@@ -68,7 +67,7 @@ describe('QuizMaker', () => {
     expect(createButton).not.toBeDisabled();
   });
 
-  it.skip('dispatches createQuiz and navigates when Create is clicked', () => {
+  it('dispatches createQuiz and navigates when Create is clicked', () => {
     renderWithStore(<QuizMaker />);
     // Select category
     fireEvent.mouseDown(screen.getByLabelText(/Category/i));

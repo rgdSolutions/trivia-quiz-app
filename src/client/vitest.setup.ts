@@ -13,7 +13,7 @@ vi.mock('react-router', async () => {
   const actual = await vi.importActual('react-router');
   return {
     ...actual,
-    useNavigate: mockNavigate,
+    useNavigate: () => mockNavigate,
   };
 });
 
@@ -27,25 +27,33 @@ vi.mock('react-redux', async () => {
   };
 });
 
-vi.mock('./src/redux/api/trivia', () => ({
-  useGetAllCategoriesQuery: () => ({
-    data: [
-      { id: 1, name: 'Science' },
-      { id: 2, name: 'History' },
-    ],
-  }),
-  useGetDifficultiesByCategoryQuery: ({ category }: { category: string }) =>
-    category ? { data: ['easy', 'medium', 'hard'] } : { data: undefined },
-  useGetQuestionsCountByCategoryAndDifficultyQuery: ({
-    category,
-    difficulty,
-  }: {
-    category: string;
-    difficulty: string;
-  }) => (category && difficulty ? { data: { question_count: 10 } } : { data: undefined }),
-}));
+vi.mock('./redux/api/trivia', async () => {
+  const actual = await vi.importActual('./redux/api/trivia');
+  return {
+    ...actual,
+    useGetAllCategoriesQuery: () => ({
+      data: [
+        { id: 1, name: 'Science' },
+        { id: 2, name: 'History' },
+      ],
+    }),
+    useGetDifficultiesByCategoryQuery: ({ category }: { category: string }) =>
+      category ? { data: ['easy', 'medium', 'hard'] } : { data: undefined },
+    useGetQuestionsCountByCategoryAndDifficultyQuery: ({
+      category,
+      difficulty,
+    }: {
+      category: string;
+      difficulty: string;
+    }) => (category && difficulty ? { data: { question_count: 10 } } : { data: undefined }),
+  };
+});
 
-vi.mock('./src/redux/slices/quiz', () => ({
-  clearQuiz: () => ({ type: 'quiz/clearQuiz' }),
-  createQuiz: vi.fn(() => ({ type: 'quiz/createQuiz' })),
-}));
+vi.mock('./redux/slices/quiz', async () => {
+  const actual = await vi.importActual('./redux/slices/quiz');
+  return {
+    ...actual,
+    clearQuiz: () => ({ type: 'quiz/clearQuiz' }),
+    createQuiz: vi.fn(() => ({ type: 'quiz/createQuiz' })),
+  };
+});
