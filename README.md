@@ -17,9 +17,9 @@ Once all three are installed, run the following command in your terminal from th
 ```shell
 yarn demo
 ```
-> **Note**: This command will run all application processes and seed the database with a default configuration. The `MAX_NUMBER_OF_CATEGORIES` value can be changed in the `.env.demo` file if you would like to seed the database additional categories.
+> **Note**: This command will run all application processes and seed the database with a default configuration. The `MAX_NUMBER_OF_CATEGORIES` value can be changed in the `.env.demo` file if you would like to seed the database with additional categories (not recommended because of api rate limits).
 
-Next, wait until your shell shows that the seeding script is completely finished.
+Next, wait until your terminal shows that the seeding script is completely finished.
 
 Finally, open your browser to http://localhost:3000.
 
@@ -45,10 +45,10 @@ Besides the dependencies that came with the boilerplate, I added these:
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
 #### Docker
-Docker is used to containerize the MongoDB databse, the server process and the client process. I am not a Docker expert, but I am experienced enough that I used the documentation and some targetted Google searches to help myself craft the *.yml files.
+Docker is used to containerize the MongoDB databse, the server process and the client process. I am no Docker expert, but I used the documentation and some targetted Google searches to help myself craft the *.yml files.
 
 #### Generative AI Usage
-Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux RTK Query api endpoints, and Vitest test cases. I also used chatGPT to help me troubleshoot my docker files. I tested and validated any and all comitted AI suggestions. Outside of the Cursor IDE and chatGPT for the docker files, no other generative AI tools were used.
+Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux RTK Query api endpoints, and Vitest test cases. I also used chatGPT to help me troubleshoot my Dockerfile. I tested and validated any and all AI suggestions before commiting them. Outside of the Cursor IDE and chatGPT for the Dockerfile, no other generative AI tools were used.
 
 ## Further Development
 To further development of this app, you need to clone this repository locally and have the following dependencies installed on your system:
@@ -60,11 +60,11 @@ Once all three are installed, run the following command in your terminal from th
 ```shell
 yarn install
 ```
-To spin up the MongoDB and seed it, run the following command:
+To spin up the MongoDB, run the following command:
 ```shell
 yarn docker-db
 ```
-To see the database, run the following command:
+To seed the database, run the following command:
 ```shell
 yarn seed-db
 ```
@@ -74,7 +74,7 @@ yarn dev
 ```
 To view the UI, open your web browser and head to http://localhost:3000/
 
-Before committing code, it's always recommended to lint and format the code with the following commands:
+Before committing new code, it's always recommended to lint and format the code with the following commands:
 ```shell
 yarn lint
 ```
@@ -98,7 +98,7 @@ src/
 ```
 
 ## Testing
-Vitest is used as the overall test runner for the unit tests of this full-stack application. SuperTest is used in the unit testing of the backend api service to mock the Express server. MSW is used in the unit testing of the frontend code to mock http requests and responses. React Testing Library is used in unit testing of the frontend code to shallow render the React Components and interact with the UI from the point of view of a human user. All test files (*.test.ts*) are colocated in the same folder as the feature code they are testing.
+Vitest is used as the overall test runner for the unit tests of this full-stack application. SuperTest is used in the unit testing of the backend api service to mock the Express server. MSW is used in the unit testing of the frontend code to mock http requests and responses. React Testing Library is used in unit testing of the frontend code to shallow render the React Components and interact with the UI from the point of view of a human user. All test files (\*.test.ts\*) are colocated in the same folder as the feature code they are testing.
 
 To run all tests, run the following command:
 ```shell
