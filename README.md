@@ -104,3 +104,6 @@ To run all tests, run the following command:
 ```shell
 yarn test
 ```
+There are 40 tests in total.
+
+<img src="./assets/tests.png" style="width: 100%" />
