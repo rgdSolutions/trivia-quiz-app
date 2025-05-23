@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { connect, connection } from 'mongoose';
 import { CategoryModel, QuestionModel } from '../shared/db-schema';
-import { shuffleArray } from '../shared/utils';
+import { decodeHtml, shuffleArray } from '../shared/utils';
 
 type OpenTDBCategory = {
   id: number;
@@ -83,14 +83,18 @@ const seedQuestions = async () => {
   const categories = await CategoryModel.find();
   for (const category of categories) {
     const questions = await fetchAllQuestionsForOneCategory(category.id);
-    const numberOfQuestions = questions.length;
+    const decodedQuestions = questions.map((question) => ({
+      ...question,
+      category: decodeHtml(question.category),
+    }));
+    const numberOfQuestions = decodedQuestions.length;
     if (numberOfQuestions === 0) {
       // If no questions are fetched, delete the category
       console.log(`\nNo questions fetched for category ${category.name}`);
       await CategoryModel.deleteOne({ id: category.id });
     } else {
       console.log(`\n${category.name} questions fetched:`, numberOfQuestions);
-      await QuestionModel.insertMany(questions);
+      await QuestionModel.insertMany(decodedQuestions);
     }
   }
   const totalQuestions = await QuestionModel.countDocuments();

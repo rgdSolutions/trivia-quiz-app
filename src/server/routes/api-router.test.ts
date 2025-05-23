@@ -98,45 +98,48 @@ describe('API Router', () => {
     const res = await request(app).get('/api/difficulties/');
     expect(res.status).toBe(404); // Express will return 404 for missing param
   });
-  
+
   it('GET /api/questions/:category returns 400 if category param is missing', async () => {
     const res = await request(app).get('/api/questions/');
     expect(res.status).toBe(404); // Express will return 404 for missing param
   });
-  
+
   it('GET /api/questions/:category/:difficulty returns 400 if params are missing', async () => {
     const res = await request(app).get('/api/questions//');
     expect(res.status).toBe(404); // Express will return 404 for missing param
   });
-  
+
   it('GET /api/questions/:category/:difficulty/count returns 400 if params are missing', async () => {
     const res = await request(app).get('/api/questions//count');
     expect(res.status).toBe(404); // Express will return 404 for missing param
   });
-  
+
   it('GET /api/quiz/:category/:difficulty/:count returns 400 if params are missing', async () => {
     const res = await request(app).get('/api/quiz///');
     expect(res.status).toBe(404); // Express will return 404 for missing param
   });
-  
+
   it('POST /api/quiz/score returns 400 if questions or selected_answers are missing', async () => {
     let res = await request(app).post('/api/quiz/score').send({});
     expect(res.status).toBe(400);
-  
+
     res = await request(app).post('/api/quiz/score').send({ questions: [] });
     expect(res.status).toBe(400);
-  
+
     res = await request(app).post('/api/quiz/score').send({ selected_answers: [] });
     expect(res.status).toBe(400);
-  
+
     res = await request(app).post('/api/quiz/score').send({ questions: [], selected_answers: [] });
     expect(res.status).toBe(400);
-  
+
     res = await request(app)
       .post('/api/quiz/score')
-      .send({ questions: [{ question: 'Q1', possible_answers: ['A', 'B', 'C', 'D'] }], selected_answers: [] });
+      .send({
+        questions: [{ question: 'Q1', possible_answers: ['A', 'B', 'C', 'D'] }],
+        selected_answers: [],
+      });
     expect(res.status).toBe(400);
-  
+
     res = await request(app)
       .post('/api/quiz/score')
       .send({ questions: [], selected_answers: ['A'] });

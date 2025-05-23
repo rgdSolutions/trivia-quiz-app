@@ -15,3 +15,8 @@ export const sortCategoryArrayAlphabetically = (array?: Category[]): Category[] 
   if (!array || array.length === 0) return [];
   return array.slice().sort((a, b) => a.name.localeCompare(b.name));
 };
+
+// Decode HTML ampersand in a string
+export const decodeHtml = (input: string): string => {
+  return input.replace('&amp;', '&');
+};

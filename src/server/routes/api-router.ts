@@ -44,7 +44,12 @@ export function apiRouter(): Router {
   // Get all quiz-ready questions for a category and difficulty
   router.get('/api/questions/:category/:difficulty', async (req: any, res: any) => {
     const { category, difficulty } = req.params;
-    if (!category || typeof category !== 'string' || !difficulty || typeof difficulty !== 'string') {
+    if (
+      !category ||
+      typeof category !== 'string' ||
+      !difficulty ||
+      typeof difficulty !== 'string'
+    ) {
       return res.status(400).json({ error: 'Bad Request' });
     }
     const questions = await getQuestionsByCategoryAndDifficulty(category, difficulty);
@@ -54,7 +59,12 @@ export function apiRouter(): Router {
   // Get question count for a category and difficulty
   router.get('/api/questions/:category/:difficulty/count', async (req: any, res: any) => {
     const { category, difficulty } = req.params;
-    if (!category || typeof category !== 'string' || !difficulty || typeof difficulty !== 'string') {
+    if (
+      !category ||
+      typeof category !== 'string' ||
+      !difficulty ||
+      typeof difficulty !== 'string'
+    ) {
       return res.status(400).json({ error: 'Bad Request' });
     }
     const questions = await getQuestionsByCategoryAndDifficulty(category, difficulty);
