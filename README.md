@@ -1,10 +1,10 @@
 # trivia-quiz-app
 A small, full-stack trivia quiz app to demo React / Redux / Express / MongoDB
 
-<div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px">
-<img src="./assets/fresh-quiz.png" style="width: 400px" />
-<img src="./assets/answered-quiz.png" style="width: 400px" />
-<img src="./assets/scored-quiz.png" style="width: 400px" />
+<div style="width: 100%; display: flex; flex-direction: column; gap: 8px">
+<img src="./assets/fresh-quiz.png" style="width: 100%" />
+<img src="./assets/answered-quiz.png" style="width: 100%" />
+<img src="./assets/scored-quiz.png" style="width: 100%" />
 </div>
 
 ## How to Demo the App
@@ -21,7 +21,7 @@ yarn demo
 
 Next, wait until your terminal shows that the seeding script is completely finished.
 
-<img src="./assets/script-finishes.png" style="max-width: 500px" />
+<img src="./assets/script-finishes.png" style="width: 100%" />
 
 Finally, open your browser to http://localhost:3000.
 
@@ -53,7 +53,7 @@ Docker is used to containerize the MongoDB databse, the server process and the c
 Because I use [Cursor](https://www.cursor.com/en) as my go-to IDE, there is always some level of generative AI assistance in the background to populate repetetive code like database schemas, api endpoints, redux RTK Query api endpoints, and Vitest test cases. I also used chatGPT to help me troubleshoot my Dockerfile. I tested and validated any and all AI suggestions before commiting them. Outside of the Cursor IDE and chatGPT for the Dockerfile, no other generative AI tools were used.
 
 ## Further Development
-To further development of this app, you need to clone this repository locally and have the following dependencies installed on your system:
+To continue the development of this app, you need to clone this repository locally and have the following dependencies installed on your system:
 - [Node.js v22](https://nodejs.org/)
 - [Yarn](https://yarnpkg.com/)
 - [Docker](https://www.docker.com/)
